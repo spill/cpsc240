@@ -1,0 +1,28 @@
+     1                                 %line 1+1 assignment03_multiplication.asm
+     2                                 [section .data]
+     3 00000000 E0930400                num1 dd 300000
+     4 00000004 801A0600                num2 dd 400000
+     5 00000008 0000000000000000        product dq 0
+     6                                 
+     7                                 [section .text]
+     8                                 [global _start]
+     9                                 
+    10                                 _start:
+    11                                 
+    12 00000000 31D2                    xor edx, edx
+    13                                 
+    14                                 
+    15 00000002 8B0425[00000000]        mov eax, [num1]
+    16                                 
+    17                                 
+    18 00000009 8B1C25[00000000]        mov ebx, [num2]
+    19 00000010 F7E3                    mul ebx
+    20                                 
+    21                                 
+    22 00000012 890425[00000000]        mov [product], eax
+    23 00000019 891425[04000000]        mov [product+4], edx
+    24                                 
+    25                                 
+    26 00000020 B83C000000              mov eax, 60
+    27 00000025 31FF                    xor edi, edi
+    28 00000027 0F05                    syscall

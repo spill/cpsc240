@@ -1,0 +1,29 @@
+     1                                 %line 1+1 assignment03_division.asm
+     2                                 [section .data]
+     3 00000000 00743BA40B000000        num1 dq 50000000000
+     4 00000008 D5DC3200                num2 dd 3333333
+     5 0000000C 00000000                quotient dd 0
+     6 00000010 00000000                remainder dd 0
+     7                                 
+     8                                 [section .text]
+     9                                 [global _start]
+    10                                 
+    11                                 _start:
+    12                                 
+    13 00000000 8B0425[00000000]        mov eax, dword [num1]
+    14 00000007 8B1425[04000000]        mov edx, dword [num1 + 4]
+    15                                 
+    16                                 
+    17 0000000E 8B1C25[00000000]        mov ebx, [num2]
+    18                                 
+    19                                 
+    20 00000015 F7F3                    div ebx
+    21                                 
+    22                                 
+    23 00000017 890425[00000000]        mov [quotient], eax
+    24 0000001E 891425[00000000]        mov [remainder], edx
+    25                                 
+    26                                 
+    27 00000025 B83C000000              mov eax, 60
+    28 0000002A 31FF                    xor edi, edi
+    29 0000002C 0F05                    syscall
