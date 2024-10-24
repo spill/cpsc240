@@ -1,0 +1,45 @@
+     1                                 %line 1+1 assignment04_multiple.asm
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 
+     8                                 
+     9                                 
+    10                                 
+    11                                 
+    12                                 [section .data]
+    13 00000000 FFFF                    num dw 65535
+    14 00000002 0000                    mul_3 dw 0
+    15 00000004 0000                    other dw 0
+    16                                 
+    17                                 [section .text]
+    18                                 [global _start]
+    19                                 
+    20                                 _start:
+    21 00000000 668B0425[00000000]      mov ax, [num]
+    22                                 
+    23                                 
+    24 00000008 66BA0000                mov dx, 0
+    25 0000000C 66BB0300                mov bx, 3
+    26 00000010 66F7F3                  div bx
+    27 00000013 6685D2                  test dx, dx
+    28 00000016 7516                    jnz else_part
+    29                                 
+    30 00000018 668B0425[00000000]      mov ax, [num]
+    31 00000020 66BA0000                mov dx, 0
+    32 00000024 66BB0500                mov bx, 5
+    33 00000028 66F7F3                  div bx
+    34 0000002B 6685D2                  test dx, dx
+    35 0000002E 74FE                    jz else_part
+    36                                 
+    37                                 else_part:
+    38 00000030 668B0425[00000000]      mov ax, [other]
+    39 00000038 66FFC0                  inc ax
+    40 0000003B 66890425[00000000]      mov [other], ax
+    41                                 
+    42                                 end_if:
+    43 00000043 B83C000000              mov eax, 60
+    44 00000048 31FF                    xor edi, edi
+    45 0000004A 0F05                    syscall
