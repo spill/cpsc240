@@ -1,0 +1,79 @@
+     1                                 %line 1+1 assignment06_print.asm
+     2                                 [section .data]
+     3 00000000 312B322B332B2E2E2E-     str1 db "1+2+3+...+99=", 0
+     4 00000000 2B39393D00         
+     5 0000000E 202020202000            ascii db "     ", 0
+     6 00000014 0A                      newline db 0x0A
+     7                                 
+     8                                 [section .bss]
+     9 00000000 <gap>                   sum resq 1
+    10                                 
+    11                                 [section .text]
+    12                                 [global _start]
+    13                                 
+    14                                 _start:
+    15                                 
+    16 00000000 48C7C000000000          mov rax, 0
+    17 00000007 48890425[00000000]      mov [sum], rax
+    18                                 
+    19                                 
+    20 0000000F 48C7C101000000          mov rcx, 1
+    21                                 sum_loop:
+    22 00000016 4801C8                  add rax, rcx
+    23 00000019 48FFC1                  inc rcx
+    24 0000001C 4883F964                cmp rcx, 100
+    25 00000020 7CF2                    jl sum_loop
+    26                                 
+    27 00000022 48890425[00000000]      mov [sum], rax
+    28                                 
+    29                                 
+    30 0000002A 48C7C20F000000          mov rdx, 15
+    31 00000031 48C7C6[00000000]        mov rsi, str1
+    32 00000038 48C7C701000000          mov rdi, 1
+    33 0000003F 48C7C001000000          mov rax, 1
+    34 00000046 0F05                    syscall
+    35                                 
+    36                                 
+    37 00000048 488B0425[00000000]      mov rax, [sum]
+    38 00000050 48C7C30A000000          mov rbx, 10
+    39 00000057 48C7C104000000          mov rcx, 4
+    40 0000005E 48C7C7[00000000]        mov rdi, ascii
+    41                                 
+    42                                 digit_to_ascii:
+    43 00000065 4831D2                  xor rdx, rdx
+    44 00000068 48F7F3                  div rbx
+    45 0000006B 80C230                  add dl, '0'
+    46 0000006E 8891[00000000]          mov [ascii + rcx], dl
+    47 00000074 48FFC9                  dec rcx
+    48 00000077 4885C0                  test rax, rax
+    49 0000007A 75E7                    jnz digit_to_ascii
+    50                                 
+    51                                 
+    52 0000007C 48C7C6[00000000]        mov rsi, ascii
+    53                                 adjust_leading_spaces:
+    54 00000083 803E20                  cmp byte [rsi], ' '
+    55 00000086 7503                    jne print_ascii
+    56 00000088 48FFC6                  inc rsi
+    57 0000008B EBF4                    jmp adjust_leading_spaces
+    58                                 
+    59                                 print_ascii:
+    60                                 
+    61 0000008D 488D1425[05000000]      lea rdx, [ascii + 5]
+    62 00000095 4829F2                  sub rdx, rsi
+    63                                 
+    64                                 
+    65 00000098 48C7C701000000          mov rdi, 1
+    66 0000009F 48C7C001000000          mov rax, 1
+    67 000000A6 0F05                    syscall
+    68                                 
+    69                                 
+    70 000000A8 48C7C201000000          mov rdx, 1
+    71 000000AF 48C7C6[00000000]        mov rsi, newline
+    72 000000B6 48C7C701000000          mov rdi, 1
+    73 000000BD 48C7C001000000          mov rax, 1
+    74 000000C4 0F05                    syscall
+    75                                 
+    76                                 
+    77 000000C6 48C7C03C000000          mov rax, 60
+    78 000000CD 4831FF                  xor rdi, rdi
+    79 000000D0 0F05                    syscall
